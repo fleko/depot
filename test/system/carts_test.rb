@@ -10,32 +10,48 @@ class CartsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Carts"
   end
 
-  test "creating a Cart" do
-    visit carts_url
-    click_on "New Cart"
+  # test "creating a Cart" do
+  #   visit carts_url
+  #   click_on "New Cart"
 
-    click_on "Create Cart"
+  #   click_on "Create Cart"
 
-    assert_text "Cart was successfully created"
-    click_on "Back"
-  end
+  #   assert_text "Cart was successfully created"
+  #   click_on "Back"
+  # end
+
+  # test "updating a Cart" do
+  #   visit carts_url
+  #   click_on "Edit", match: :first
+
+  #   click_on "Update Cart"
+
+  #   assert_text "Cart was successfully updated"
+  #   click_on "Back"
+  # end
 
   test "updating a Cart" do
-    visit carts_url
-    click_on "Edit", match: :first
+    visit store_index_url
 
-    click_on "Update Cart"
+    click_on 'Add to Cart', match: :first
 
-    assert_text "Cart was successfully updated"
-    click_on "Back"
-  end
+    assert_selector '#cart'
 
-  test "destroying a Cart" do
-    visit carts_url
-    page.accept_confirm do
-      click_on "Destroy", match: :first
+    assert_selector 'tr.line-item-highlight'
+
+    accept_alert do
+      click_on 'Empty cart', match: :first
     end
 
-    assert_text "Cart was successfully destroyed"
+    assert_no_selector '#cart'
   end
+
+  # test "destroying a Cart" do
+  #   visit carts_url
+  #   page.accept_confirm do
+  #     click_on "Destroy", match: :first
+  #   end
+
+  #   assert_text "Cart was successfully destroyed"
+  # end
 end
