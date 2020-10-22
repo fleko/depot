@@ -35,6 +35,8 @@ class OrdersController < ApplicationController
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
 
+        ChargeOrderJob.perform_later(@order, pay_type_params.to_h)
+
         format.html { redirect_to store_index_url, notice:
           'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
@@ -49,7 +51,12 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1.json
   def update
     respond_to do |format|
+      old_shipped_date = @order.shipped_date
+
       if @order.update(order_params)
+        if old_shipped_date != @order.shipped_date
+          OrderMailer.shipped(@order).deliver_later
+        end
         format.html { redirect_to @order, notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
@@ -77,7 +84,7 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
+      params.require(:order).permit(:name, :address, :email, :pay_type, :shipped_date)
     end
 
     def pay_type_params

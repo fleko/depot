@@ -9,5 +9,5 @@ one:
 two:
   name: MyString
   address: MyText
-  email: MyString
+  email: mike@example.com
   pay_type: 1

@@ -1,0 +1,7 @@
+Dear <%= @order.name %>
+
+Apologies, but your order with the following items:
+
+<%= render @order.line_items -%>
+
+Has failed to process. Please try again.

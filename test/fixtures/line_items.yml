@@ -4,3 +4,8 @@ one:
   product: two
   cart: one
   price: 9.99
+
+two:
+  product: ruby
+  order: one
+  price: 9.99

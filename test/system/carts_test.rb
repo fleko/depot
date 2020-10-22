@@ -46,6 +46,19 @@ class CartsTest < ApplicationSystemTestCase
     assert_no_selector '#cart'
   end
 
+  test "attempt to browse invalid Cart" do
+    invalid_cart_id= "bogus_cart"
+
+    visit cart_url(invalid_cart_id)
+
+    assert_text "Invalid cart"
+
+    mail = ActionMailer::Base.deliveries.last
+    assert_equal ["depot@example.com"],                      mail.to
+    assert_equal 'Sam Ruby <depot@example.com>',            mail[:from].value
+    assert_equal "Pragmatic Store Error", mail.subject
+  end
+
   # test "destroying a Cart" do
   #   visit carts_url
   #   page.accept_confirm do
