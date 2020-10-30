@@ -1,0 +1,8 @@
+# one:
+#   record: name_of_fixture (ClassOfFixture)
+#   name: content
+#   body: <p>In a <i>million</i> stars!</p>
+support_request_one:
+  record: one (SupportRequest)
+  name: response
+  body: <p>Lorem ipsum dolor sit amet.</p>

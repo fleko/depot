@@ -32,7 +32,7 @@ class OrdersTest < ApplicationSystemTestCase
 
     shipped_date = DateTime.current.strftime("%d%m%Y\t%H%M")
 
-    fill_in "Shipped date", with: shipped_date
+    fill_in "Shipped Date", with: shipped_date
 
     perform_enqueued_jobs do
       click_on "Update Order"
@@ -43,7 +43,7 @@ class OrdersTest < ApplicationSystemTestCase
     assert_equal shipped_date, Order.first.shipped_date.strftime("%d%m%Y\t%H%M")
 
     mail = ActionMailer::Base.deliveries.last
-    assert_equal ["mike@example.com"],                 mail.to
+    assert_equal ["chris@nowhere.net"],                 mail.to
     assert_equal 'Sam Ruby <depot@example.com>',       mail[:from].value
     assert_equal "Pragmatic Store Order Shipped", mail.subject
   end
@@ -87,7 +87,7 @@ class OrdersTest < ApplicationSystemTestCase
     select 'Check', from: 'order[pay_type]'
 
     fill_in "Routing #", with: "123456"
-    fill_in "Account #", with: "987654"
+    fill_in "order_account_number", with: "987654"
 
     mock = Minitest::Mock.new
     mock.expect :succeeded?, false
@@ -125,7 +125,7 @@ class OrdersTest < ApplicationSystemTestCase
       assert_selector payment_type_selector
 
       fill_in "Routing #", with: "123456"
-      fill_in "Account #", with: "987654"
+      fill_in "order_account_number", with: "987654"
 
       perform_enqueued_jobs do
         click_button "Place Order"
