@@ -10,5 +10,10 @@ class StoreController < ApplicationController
     session[:counter] = session[:counter].nil? ? 1 : session[:counter] + 1
 
     @session_counter = session[:counter]
+    if params[:set_locale]
+      redirect_to store_index_url(locale: params[:set_locale])
+    else
+ 	    @products = Product.order(:title)
+    end
   end
 end

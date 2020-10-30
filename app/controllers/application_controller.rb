@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :authorize
+  before_action :authorize, :set_i18n_locale_from_params
 
   protected
 
@@ -12,6 +12,18 @@ class ApplicationController < ActionController::Base
         authenticate_or_request_with_http_basic do |username, password|
           user = User.find_by(name: username)
           user && user.authenticate(password)
+        end
+      end
+    end
+
+    def set_i18n_locale_from_params
+      if params[:locale]
+        if I18n.available_locales.map(&:to_s).include?(params[:locale])
+          I18n.locale = params[:locale]
+        else
+          flash.now[:notice] =
+            "#{params[:locale]} translation not available"
+          logger.error flash.now[:notice]
         end
       end
     end
